@@ -1,0 +1,22 @@
+<template>
+  <div>
+    <web id="webView" src="http://localhost:8082/index.html" style="width:100%">
+    {{placeholder}}
+    </web>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    readOnly: false,
+    placeholder: "",
+    showImgSize: false,
+    showImgToolbar: false,
+    showImgResize: false,
+  },
+  onInit() {
+    console.info(`外部传递的数据：`, this.placeholder)
+  }
+}
+</script>

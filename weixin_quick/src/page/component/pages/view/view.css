@@ -1,0 +1,14 @@
+.flex-wrp{
+  margin-top: 60dp;
+  display:flex;
+}
+.flex-item{
+  width: 200dp;
+  height: 300dp;
+  font-size: 26dp;
+}
+.flex-item-V{
+  margin: 0 auto;
+  width: 300dp;
+  height: 200dp;
+}

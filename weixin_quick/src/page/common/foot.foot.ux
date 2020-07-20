@@ -1,0 +1,7 @@
+<import name="onekit-image" src="../../onekit/ui/image"></import>
+<import name="onekit-navigator" src="../../onekit/ui/navigator"></import>
+<template>
+  <onekit-navigator class="page-foot" openType="switchTab" url="/page/component/index" hover-class="none">
+    <onekit-image class="icon-foot" src="../../../../image/icon_foot.png"></onekit-image>
+  </onekit-navigator>
+</template>

@@ -1,0 +1,17 @@
+<import name="onekit-page" src="../../onekit/ui/page"></import>
+<import name="onekit-text" src="../../onekit/ui/text"></import>
+<template>
+    <onekit-page>
+        <onekit-text @click="button_click"><text>组件</text></onekit-text>
+    </onekit-page>
+</template>
+
+
+<script>
+  import wx from "../../onekit/wx"
+export default {
+ button_click:function(){
+   wx.switchTab({ url: "page/API/index" });
+ }
+}
+</script>

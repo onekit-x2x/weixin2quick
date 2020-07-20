@@ -1,0 +1,21 @@
+<import name="onekit-view" src="../../onekit/ui/view"></import>
+<template>
+  <onekit-view class="page-head">
+    <onekit-view class="page-head-title"><text>{{title}}</text></onekit-view>
+    <onekit-view class="page-head-line"></onekit-view>
+    <onekit-view wx:if="{{desc}}" class="page-head-desc"><text>{{desc}}</text></onekit-view>
+  </onekit-view>
+</template>
+<script>
+  export default {
+ props: {
+      data: String
+    },
+    onInit() {
+      let data = JSON.parse(this.data);
+      for(var key in data){
+        this.$set(key,data[key]); 
+      }
+    }
+  }
+</script>

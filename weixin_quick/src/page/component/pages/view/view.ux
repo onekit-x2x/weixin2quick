@@ -1,0 +1,49 @@
+<import name="onekit-page" src="../../../../onekit/ui/page.ux"></import>
+<import name="onekit-view" src="../../../../onekit/ui/view.ux"></import>
+<import name="template-head" src="../../../common/head.head"></import>
+<import name="template-foot" src="../../../common/foot.foot" ></import>
+<template>
+  <onekit-page>
+    <onekit-view class="container">
+
+      <template-head data='{"title":"onekit-view"}'></template-head>
+
+      <onekit-view class="page-body">
+
+        <onekit-view class="page-section">
+          <onekit-view class="page-section-title">
+            <text>flex-direction: row\n横向布局</text>
+          </onekit-view>
+          <onekit-view class="page-section-spacing">
+            <onekit-view class="flex-wrp" style="flex-direction:row;">
+              <onekit-view class="flex-item demo-text-1"></onekit-view>
+              <onekit-view class="flex-item demo-text-2"></onekit-view>
+              <onekit-view class="flex-item demo-text-3"></onekit-view>
+            </onekit-view>
+          </onekit-view>
+        </onekit-view>
+        <onekit-view class="page-section">
+          <onekit-view class="page-section-title">
+            <text>flex-direction: column\n纵向布局</text>
+          </onekit-view>
+          <onekit-view class="flex-wrp" style="flex-direction:column;">
+            <onekit-view class="flex-item flex-item-V demo-text-1"></onekit-view>
+            <onekit-view class="flex-item flex-item-V demo-text-2"></onekit-view>
+            <onekit-view class="flex-item flex-item-V demo-text-3"></onekit-view>
+          </onekit-view>
+        </onekit-view>
+      </onekit-view>
+
+      <template-foot></template-foot>
+
+    </onekit-view>
+
+  </onekit-page>
+</template>
+<script>
+export default {
+}
+</script>
+<style>
+@import "./view.css";
+</style>

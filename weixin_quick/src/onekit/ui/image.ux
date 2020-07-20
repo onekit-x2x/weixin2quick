@@ -1,0 +1,9 @@
+<template>
+		<image/>
+</template>
+
+<script>
+  export default {
+    
+  }
+</script>

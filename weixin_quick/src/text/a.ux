@@ -1,0 +1,27 @@
+<template>
+    <text>a页面2</text>
+</template>
+
+<script>
+import { getApp, getCurrentPages } from '../onekit/onekit.js';
+import wx from '../onekit/wx.js';
+export default {
+    private: {
+
+    },
+    onShow() {
+        wx.onShow(this);
+    },
+    onDestroy() {
+        wx.onDestroy(this);
+    },
+    onInit() {
+        wx.onInit(this);
+        // var app = getApp()
+        // console.log(app.f1(2, 3))
+        let getPage = getCurrentPages();
+        console.log("getpage a", getPage);
+    },
+}
+</script>
+

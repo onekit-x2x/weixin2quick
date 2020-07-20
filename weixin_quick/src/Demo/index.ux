@@ -1,0 +1,1147 @@
+<import name="onekit-editor" src="../onekit/ui/editor.ux"></import>
+<template>
+	<!-- template里只能有一个根节点 -->
+	<div class="demo-page">
+		<text @click="toText">{{title}}</text>
+		<text></text>
+		<!-- 
+		<text @click="getbackAudio">信息</text>
+		<text @click="play">play</text>
+		<text @click="stop">stop</text>
+		<text @click="pause">pause</text>
+		<text @click="seekAudio">seek</text> -->
+		<!-- <onekit-editor placeholder="{{placeholder}}">
+		</onekit-editor> -->
+	</div>
+</template>
+
+<script>
+import { getApp,getCurrentPages } from '../onekit/onekit.js';
+import wx from '../onekit/wx.js';
+import device from '@system.device'
+import storage from '@system.storage'
+import file from '@system.file'
+import wifi from '@system.wifi'
+import calendar from '@system.calendar'
+
+import push from '@service.push'
+import account from '@service.account'
+import geolocation from '@system.geolocation'
+import alarm from '@system.alarm'
+import wxaccount from '@service.wxaccount'
+import prompt from '@system.prompt'
+import share from '@system.share'
+import sensor from '@system.sensor'
+import image from '@system.image'
+import bluetooth from '@system.bluetooth'
+import media from '@system.media'
+import request from '@system.request'
+import router from '@system.router'
+
+export default {
+
+	// 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+	private: {
+		title: '示例页面1'
+	},
+	toText() {
+		wx.navigateTo({
+			url: "/Text"
+		})
+	},
+	onShow() {
+		wx.onShow(this);
+	},
+	onDestroy(){
+		wx.onDestroy(this);
+	},
+	onInit() {
+		wx.onInit(this);
+		let getPage = getCurrentPages();
+		console.log("getpage",getPage);
+
+		// let app = getApp();
+		// app.f1 = function (a, b) {
+		// 	return a + b;
+		// }
+		// console.log("getApp",getApp)
+
+
+		// this.$page.setTitleBar({
+		// 	text: 'Hello',
+		// 	textColor: '#FF0000',
+		// 	backgroundColor: '#cccccc',
+		// 	backgroundOpacity: 0.5,
+		// 	menu: false
+		// })
+
+
+
+		// wx.setNavigationBarTitle({
+		// 	title:"11144"
+		// })
+
+		// wx.setNavigationBarColor({
+		// 	frontColor: '#ffffff',
+		// 	backgroundColor: '#ff0000',
+		// 	animation: {
+		// 		duration: 400,
+		// 		timingFunc: 'easeIn'
+		// 	}
+		// })
+
+		// wx.hideHomeButton()
+
+		// storage.get({
+		// 	key: 'A1',
+		// 	success: function () {
+		// 		console.log('handling success',arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`,arguments)
+		// 	},
+		// 	complete: function () {
+		// 		console.log('handling complete', arguments)
+		// 	}
+		// })
+
+		// storage.set({
+		// 	key: 'A1',
+		// 	value: 'V1',
+		// 	success: function () {
+		// 		console.log('handling success',arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`,arguments)
+		// 	},
+		// 	complete: function () {
+		// 		console.log('handling complete', arguments)
+		// 	}
+		// })
+
+		// var type = wxaccount.getType();
+		// console.log("type",type);
+		// if (type == 'APP') {
+		// 	wxaccount.authorize({
+		// 		scope: 'snsapi_userinfo',
+		// 		state: 'randomString',
+		// 		success: function (data) {
+		// 			console.log("wxaccount authorize success:" + JSON.stringify(data));
+		// 		},
+		// 		fail: function (data, code) {
+		// 			console.log("wxaccount authorize fail:" + data + ", code:" + code);
+		// 		},
+		// 		cancel: function () {
+		// 			console.log("wxaccount authorize cancelled.");
+		// 		}
+		// 	});
+		// } else {
+		// 	console.log("wxaccount not available.");
+		// }
+
+		// alarm.setAlarm({
+		// 	hour: 18,
+		// 	minute: 20,
+		// 	message: '闹钟1',
+		// 	days: [4],
+		// 	// ringtone: 'internal://mass/test/test.mp3',
+		// 	success: function () {
+		// 		console.log('handling success',arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`,arguments)
+		// 	},
+		// 	complete: function () {
+		// 		console.log('handling complete',arguments)
+		// 	}
+		// })
+
+		// calendar.insert({
+		// 	title: '事件Ａ',
+		// 	startDate: '1591775342401',
+		// 	endDate: '1591785341201',
+		// 	dpindMinutes: [5, 15, 30],
+		// 	// duration: 'PT1H',
+		// 	allDay:true,
+		// 	rrule: 'FREQ=WEEKLY;COUNT=10;WKST=SU',
+		// 	success: function () {
+		// 		console.log('handling success', arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`, arguments)
+		// 	},
+		// 	complete: function () {
+		// 		console.log('handling complete', arguments)
+		// 	}
+		// })
+
+
+		// const backgroundAudioManager = wx.getBackgroundAudioManager()
+		// console.log(backgroundAudioManager);
+		// backgroundAudioManager.title = '此时此刻'
+		// backgroundAudioManager.src = 'http://m10.music.126.net/20200609105650/55d6fcd3ef2ac8518f85d0a40819ea7f/ymusic/33d7/32cb/8085/f9fc6e00ed72b9f44b35ee9be94f7970.mp3'
+		// backgroundAudioManager.play();
+		// setInterval(()=>{console.log(backgroundAudioManager.title);},1000)
+
+		// wx.request({
+		// 	url: 'https://locally.uieee.com/slides',
+		// 	// url: 'http://192.168.22.150/Text/index.jsp',
+		// 	success(res) {
+		// 		console.log('request success', res)
+
+		// 	},
+		// 	fail(res) {
+		// 		console.log('request fail', res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log('request complete', res)
+		// 	},
+		// })
+
+		// wx.getSystemInfo({
+		// 	success(res) {
+		// 		console.log('getSystemInfo success', res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log('getSystemInfo fail', res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log('getSystemInfo complete', res)
+		// 	},
+		// })
+
+		// wx.uploadFile({
+		// 	url: 'http://192.168.22.67/quick2weixin/upload', //仅为示例，非真实的接口地址
+		// 	filePath: "internal://tmp/f9d0fa29-fda6-4f3e-869f-44d84b4f81df/IMG20200319153322.jpg",
+		// 	// internal://tmp/f9d0fa29-fda6-4f3e-869f-44d84b4f81df/IMG20200319153322.jpg
+		// 	name: 'file1',
+		// 	formData: {
+		// 		'user': 'test'
+		// 	},
+		// 	success(res) {
+		// 		console.log('uploadFile success', res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log('uploadFile fail', res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log('uploadFile complete', res)
+		// 	},
+		// })
+
+		// wx.downloadFile({
+		// 	url: "https://www.onekitwx.com/quick2weixin/1.zip",
+		// 	header:{
+
+		// 	},
+		// 	success(res) {
+		// 		console.log('downloadFile success, res is', res)
+		// 		self.setData({
+		// 			imageSrc: res.tempFilePath
+		// 		})
+		// 	},
+		// 	fail({ errMsg }) {
+		// 		console.log('downloadFile fail, err is:', errMsg)
+		// 	}
+		// })
+
+
+		// wx.chooseImage({
+		// 	success(res) {
+		// 		let tempFilePaths1 = res.tempFilePaths;
+		// 		console.log("tempFilePaths1",tempFilePaths1)
+		// 		let path = tempFilePaths1[0];
+		// 		wx.uploadFile({
+		// 			url: 'https://www.onekitwx.com/quick/weixin/request/upload', //仅为示例，非真实的接口地址
+		// 			filePath: path,
+		// 			name: 'file1',
+		// 			formData: {
+		// 				'user': 'test'
+		// 			},
+		// 			success() {
+		// 				console.log("uploadFile success", arguments)
+		// 			},
+		// 			fail() {
+		// 				console.log("uploadFile fail", arguments)
+		// 			},
+		// 			complete(res) {
+		// 				console.log("uploadFile complete", res)
+		// 			}
+		// 		})
+		// 	}
+		// })
+
+
+
+		// const aa = wx.request({
+		//   url: 'https://locally.uieee.com/slides',
+		//   // url: 'http://192.168.22.150/Text/index.jsp',
+		//   success(res) {
+		//     console.log('request success', res)
+
+		//   },
+		//   fail(res) {
+		//     console.log('request fail', res)
+		//   },
+		//   complete(res) {
+		//     console.log('request complete', res)
+		//   },
+		// })
+		// console.log(aa)
+		// aa.abort();
+		// wx.vibrateShort({
+		// 	success(res) {
+		// 		console.log("vibrateLong success", res);
+		// 	},
+		// 	fail(res) {
+		// 		console.log("vibrateLong fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("vibrateLong complete", res)
+		// 	}
+		// })
+
+		// let ws = wx.connectSocket({
+		// 	// url: 'wss://echo.websocket.org',
+		// 	url: "ws://192.168.23.234/quick/websocket/websocket1",
+		// 	header: {
+		// 		'content-type': 'application/json'
+		// 	},
+		// 	protocols: ['protocol1']
+		// })
+		// console.log("ws", ws)
+		// ws.onOpen((res) => {
+		// 	console.log("res");
+		// 	ws.send({
+		// 		data: "aaaa"
+		// 	})
+		// })
+		// ws.onMessage((res) => {
+		// 	console.log(res);
+		// })
+
+		// let socketOpen = false
+		// const socketMsgQueue = []
+		// wx.connectSocket({
+		// 	url: 'test.php'
+		// })
+
+		// wx.onSocketOpen(function (res) {
+		// 	socketOpen = true
+		// 	for (let i = 0; i < socketMsgQueue.length; i++) {
+		// 		sendSocketMessage(socketMsgQueue[i])
+		// 	}
+		// 	socketMsgQueue = []
+		// })
+
+		// function sendSocketMessage(msg) {
+		// 	if (socketOpen) {
+		// 		wx.sendSocketMessage({
+		// 			data: msg
+		// 		})
+		// 	} else {
+		// 		socketMsgQueue.push(msg)
+		// 	}
+		// }
+		// console.log("ws",ws)
+		// wx.onSocketOpen((res) => {
+		// 	wx.sendSocketMessage({
+		// 		data: 'send message',
+		// 		success: function () {
+		// 			console.log(`send success`)
+		// 		},
+		// 		fail: function (data, code) {
+		// 			console.log(`handling fail, code = ${code}`)
+		// 		}
+		// 	})
+		// })
+
+		// ws.onError(function(res){
+		// 	console.log(res.data);
+		// })
+
+
+		// ws.send({
+
+		// });
+
+		// let udp = wx.createUDPSocket();
+		// udp.bind();
+
+		// wx.getLocation({
+		// 	type: 'wgs84',
+		// 	success(res) {
+		// 		console.log("getLocation success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("getLocation fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("getLocation fail", res)
+		// 	}
+		// })
+
+		// wx.openLocation({
+		// 	latitude: 30.5407,
+		// 	longitude: 104.0607,
+		// 	success: function () {
+		// 		console.log(`open location success`)
+		// 	},
+		// 	fail: function (data, code) {
+		// 		console.log(`open location fail, code = ${code}`)
+		// 	},
+		// 	complete: function () {
+		// 		console.log(`open location complete`)
+		// 	}
+		// })
+
+		// geolocation.getLocation({
+		// 	success: function (data) {
+		// 		console.log("getLocation success",data)
+		// 		geolocation.openLocation({
+		// 			latitude: data.latitude,
+		// 			longitude: data.longitude,
+		// 			success: function () {
+		// 				console.log(`open location success`)
+		// 			},
+		// 			fail: function (data, code) {
+		// 				console.log(`open location fail, code = ${code}`)
+		// 			},
+		// 			complete: function () {
+		// 				console.log(`open location complete`)
+		// 			}
+		// 		})
+		// 	},
+		// 	fail: function (data, code) {
+		// 		console.log(`handling fail, code = ${code}`)
+		// 	}
+		// })
+
+		// geolocation.getLocationType({
+		// 	success: function (data) {
+		// 		console.log(`handling success: locationType = ${data.types}`)
+		// 	},
+		// 	fail: function (data, code) {
+		// 		console.log(`handling fail, code = ${code}`)
+		// 	}
+		// })
+
+
+		// wx.openLocation()
+
+		// wx.scanCode({
+		// 	success(res) {
+		// 		console.log("scanCode success", res);
+		// 	},
+		// 	fail(res) {
+		// 		console.log("scanCode fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("scanCode complete", res)
+		// 	}
+		// })
+
+		// wx.setClipboardData({
+		// 	data: 'data1',
+		// 	success(res) {
+		// 		console.log("setClipboardData success",res);
+		// 	},
+		// 	fail(res) {
+		// 		console.log("setClipboardData fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("setClipboardData complete", res)
+		// 	}
+		// })
+
+		// wx.getClipboardData({
+		// 	success(res) {
+		// 		console.log("getClipboardData success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("getClipboardData fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("getClipboardData complete", res)
+		// 	}
+		// })
+
+		// wx.getNetworkType({
+		// 	success(res) {
+		// 		console.log("getNetworkType success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("getNetworkType fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("getNetworkType complete", res)
+		// 	}
+		// })
+		// wx.openBluetoothAdapter({
+		// 	success(res) {
+		// 		console.log(" success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log(" fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log(" complete", res)
+		// 	}
+		// })
+		// wx.getBluetoothDevices({
+		// 	success(res) {
+		// 		console.log(" success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log(" fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log(" complete", res)
+		// 	}
+		// })
+		// 		bluetooth.openAdapter({
+		//   success: function() {
+		//     console.log('success')
+		//   },
+		//   fail: function(data, code) {
+		//     console.log(`handling fail, code = ${code}`)
+		//   },
+		//   complete: function() {
+		//     console.log('complete')
+		//   }
+		// })
+		// function ab2hex(buffer) {
+		//   var hexArr = Array.prototype.map.call(new Uint8Array(buffer), function(bit) {
+		//     return ('00' + bit.toString(16)).slice(-2)
+		//   })
+		//   return hexArr.join('')
+		// }
+		// bluetooth.getDevices({
+		//   success: function(data) {
+		//     console.log('get device list has founded',data)
+		//   },
+		//   fail: function(data, code) {
+		//     console.log(`handling fail, code = ${code}`)
+		//   },
+		//   complete: function() {
+		//     console.log('complete')
+		//   }
+		// })
+		// wx.onNetworkStatusChange(function(res) {
+		// 	console.log("onNetworkStatusChange", res)
+		// })
+
+		// wx.offNetworkStatusChange(function(res) {
+		// 	console.log("onNetworkStatusChange", res)
+		// });
+
+		// wx.setScreenBrightness({
+		// 	value: 0.5,
+		// 	success(res) {
+		// 		console.log("getNetworkType success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("getNetworkType fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("getNetworkType complete", res)
+		// 	}
+		// })
+
+		// wx.getScreenBrightness({
+		// 	success(res) {
+		// 		console.log("getValue success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("getValue fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("getValue complete", res)
+		// 	}
+		// })
+
+		// wx.setKeepScreenOn({
+		// 	keepScreenOn: true,
+		// 	success(res) {
+		// 		console.log("setKeepScreenOn success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("setKeepScreenOn fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("setKeepScreenOn complete", res)
+		// 	}
+		// })
+		// wx.onUserCaptureScreen(function(res) {
+		// 	console.log('用户截屏了')
+		// });
+
+		// wx.getBatteryInfo({
+		//   success(res) {
+		//     console.log("getBatteryInfo success",res)
+		//   },
+		//   fail(res) {
+		//     console.log("getBatteryInfo fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("getBatteryInfo complete", res)
+		//   }
+		// })
+
+		// const RecorderManager = wx.getRecorderManager();
+		// RecorderManager.onError({
+		//   success(res) {
+		//     console.log("RecorderManager success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("RecorderManager fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("RecorderManager complete", res)
+		//   }
+		// })
+
+		// wx.stopRecord({
+		// 	success(res) {
+		// 		console.log("stopRecord success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("stopRecord fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("stopRecord complete", res)
+		// 	}
+		// })
+
+
+
+
+
+		// wx.startWifi();
+		// wx.connectWifi({
+		// 	SSID: 'Smartisan_space 5G',
+		// 	password: '82882888',
+		// 	BSSID: "06:05:88:19:2f:4f",
+		// 	success() {
+		// 		console.log("connectWifi success", arguments)
+		// 	},
+		// 	fail() {
+		// 		console.log("connectWifi fail", arguments)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("connectWifi complete", res)
+		// 	}
+		// })
+
+		// wifi.getConnectedWifi({
+		// 	success(res) {
+		// 		console.log("wifi",res)
+		// 	}
+		// })
+		// wx.startWifi();
+		// wx.getConnectedWifi({
+		// 	success(res) {
+		// 		console.log("wx",res)
+		// 	}
+		// })
+		// wx.getWifiList({
+		// 	success: function () {
+		// 		console.log('scan success')
+		// 		wifi.onscanned = function (data) {
+		// 			console.log(data)
+		// 		}
+		// 	},
+		// 	fail: function (data, code) {
+		// 		console.log(`handling fail, code = ${code}`)
+		// 	}
+		// })
+
+		// wx.scanCode({
+		// 	success(res) {
+		// 		console.log(res)
+		// 	}
+		// })
+		// wx.openBluetoothAdapter();
+
+		//     wx.getBluetoothAdapterState({
+		//       success(res) {
+		//         console.log("getBluetoothAdapterState success", res)
+		//       },
+		//       fail(res) {
+		//         console.log("getBluetoothAdapterState fail", res)
+		//       },
+		//       complete(res) {
+		//         console.log("getBluetoothAdapterState complete", res)
+		//       }
+		//     })
+		// wx.onBluetoothAdapterStateChange(function (res) {
+		//   console.log('adapterState changed, now is', res)
+		// })
+		// wx.stopBluetoothDevicesDiscovery({
+		//   success(res) {
+		//     console.log("startDevicesDiscovery success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("startDevicesDiscovery fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("startDevicesDiscovery complete", res)
+		//   }
+		// })
+
+		// wx.getBluetoothDevices({
+		//   success(res) {
+		//     console.log("getBluetoothDevices success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("getBluetoothDevices fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("getBluetoothDevices complete", res)
+		//   }
+		// })
+
+		//     wx.getConnectedBluetoothDevices({
+		//       success(res) {
+		//         console.log(res)
+		//       }
+		//     })
+		// const CameraContext = wx.createCameraContext();
+		// // console.log(CameraContext.takePhoto);
+		// CameraContext.startRecord({
+		//   success(res) {
+		//     console.log("takePhoto success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("takePhoto fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("takePhoto complete", res)
+		//   }
+		// })
+		// media.takeVideo({
+		//   success(res) {
+		//     console.log("takePhoto success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("takePhoto fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("takePhoto complete", res)
+		//   }
+		// })
+		// request.download({
+		// 	url: "https://image.baidu.com/search/detail?ct=503316480&z=0&ipn=d&word=%E5%9B%BE%E7%89%87&step_word=&hs=2&pn=2&spn=0&di=172810&pi=0&rn=1&tn=baiduimagedetail&is=0%2C0&istype=0&ie=utf-8&oe=utf-8&in=&cl=2&lm=-1&st=undefined&cs=3892521478%2C1695688217&os=733181249%2C216344720&simid=4289427427%2C709582725&adpicid=0&lpn=0&ln=1848&fr=&fmq=1592473244527_R&fm=&ic=undefined&s=undefined&hd=undefined&latest=undefined&copyright=undefined&se=&sme=&tab=0&width=undefined&height=undefined&face=undefined&ist=&jit=&cg=&bdtype=0&oriquery=&objurl=http%3A%2F%2Fa0.att.hudong.com%2F56%2F12%2F01300000164151121576126282411.jpg&fromurl=ippr_z2C%24qAzdH3FAzdH3Fp7rtwg_z%26e3Bkwthj_z%26e3Bv54AzdH3Ftrw1AzdH3Fwa_cm_8d_a8naaaaa8m98c88d8c0m8dmdbd988_3r2_z%26e3Bip4s&gsm=3&rpstart=0&rpnum=0&islist=&querylist=&force=undefined",
+		// 	success: function (data) {
+		// 		// 监听下载任务
+		// 		console.log("download success1",data);
+		// 		request.onDownloadComplete({
+		// 			token: data.token,
+		// 			success: function (ret) {
+		// 				let imageUri = ret.uri;
+		// 				console.log("imageUri",imageUri)
+		// 				wx.getImageInfo({
+		// 					src: imageUri,
+		// 					success(res) {
+		// 						console.log("getImageInfo success", res)
+		// 					},
+		// 					fail(res) {
+		// 						console.log("getImageInfo fail", res)
+		// 					},
+		// 					complete(res) {
+		// 						console.log("getImageInfo complete", res)
+		// 					}
+		// 				})
+		// 			},
+		// 			fail: function (erromsg, errocode) {
+		// 				console.info(`### request.onDownloadComplete ### ${errocode}: ${erromsg}`)
+		// 			}
+		// 		})
+		// 	}
+		// })
+		// wx.downloadFile({
+		// 	url: "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2247692397,1189743173&fm=5",
+		// 	header: {
+
+		// 	},
+		// 	success(res) {
+		// 		console.log('downloadFile success, res is', res)
+		// 		let	imageSrc = res.tempFilePath
+		// 		wx.getImageInfo({
+		// 			filePath: imageSrc,
+		// 			success(res) {
+		// 				console.log("getImageInfo success", res)
+		// 			},
+		// 			fail(res) {
+		// 				console.log("getImageInfo fail", res)
+		// 			},
+		// 			complete(res) {
+		// 				console.log("getImageInfo complete", res)
+		// 			}
+		// 		})
+		// 	},
+		// 	fail({ errMsg }) {
+		// 		console.log('downloadFile fail, err is:', errMsg)
+		// 	}
+		// })
+
+		// wx.chooseMessageFile({
+		//   count: 10,
+		//   success(res) {
+		//     console.log("chooseImage success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("chooseImage fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("chooseImage complete", res)
+		//   }
+		// })
+		
+		//  wx.saveImageToPhotosAlbum({
+		// filePath:"internal://tmp/1f72cae2-dbe1-4ee0-9cc5-1b6c3d54ab23/IMG20200414120411.jpg",
+		//    success(res) {
+		//      console.log("saveImageToPhotosAlbum success", res)
+		//    },
+		//    fail(res) {
+		//      console.log("saveImageToPhotosAlbum fail", res)
+		//    },
+		//    complete(res) {
+		//      console.log("saveImageToPhotosAlbum complete", res)
+		//    }
+		//  })
+		// wx.chooseVideo({
+		//   success(res) {
+		//     console.log("chooseVideo success", res)
+		//   },
+		//   fail(res) {
+		//     console.log("chooseVideo fail", res)
+		//   },
+		//   complete(res) {
+		//     console.log("chooseVideo complete", res)
+		//   }
+		// })
+		// wx.getImageInfo({
+		// 	// "internal://tmp/d7b0645a-7aec-40a6-ab56-baaf5a04e619/-73cc35b43df894c7.jpg"
+		// 	uri: "/src/onekit/logo.png",
+		// 	success(res) {
+		// 		console.log("wx.getImageInfo success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("wx.getImageInfo fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("wx.getImageInfo complete", res)
+		// 	}
+		// })
+		// image.getImageInfo({
+		// 	uri: '/src/onekit/logo.png',
+		// 	success(res) {
+		// 		console.log("wx.getImageInfo success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("wx.getImageInfo fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("wx.getImageInfo complete", res)
+		// 	}
+		// })
+		// wx.playVoice()
+		// const base64 = 'CxYh'
+		// const arrayBuffer = wx.base64ToArrayBuffer(base64)
+		// console.log(arrayBuffer)
+
+		// wx.getSavedFileInfo({
+		// 	  uri:"internal://cache/audio102089011312003831.3gp",
+		// 	  success(res) {
+		// 	    console.log(`getSavedFileList success:` , res)
+		// 	  },
+		// 	  fail(res) {
+		// 	    console.log(`getSavedFileList fail :` , res)
+		// 	  },
+		// 	  complete(res) {
+		// 	  	console.log("getSavedFileList complete", res)
+		// 	  }
+		// })
+		// wx.showLoading({
+		// 	title: '加载中',
+		// })
+		//  wx.getSavedFileInfo({
+		// uri:"http://store/wxecb5d25a4a5c222f.o6zAJs9Savi5RspfJG-LAmCGgxxs.FgwuQoEWHWzb71616027873defb38e5a7c7fcf49a129.png",
+		//    success(res) {
+		//      console.log("getSavedFileInfo success:" , res)
+		//    },
+		//    fail(res) {
+		//      console.log("getSavedFileInfo fail :" , res)
+		//    },
+		//    complete(res) {
+		//      console.log("getSavedFileInfo complete", res)
+		//    }
+		//  })
+
+		// var FileSystemManager = wx.getFileSystemManager();
+		// // internal://cache/audio102089011312003831.3gp
+		// // internal://tmp/286b9ebc-4785-40fd-8ed4-aff487f1b1a2/Screenshot_2020-05-05-18-40-09-83.jpg
+		// FileSystemManager.access({
+		// 	  path: 'internal://cache/audio102089011312003831.3gp',
+		// 	  success: function(data) {
+		// 	    console.log(`handling success:` ,data)
+		// 	  },
+		// 	  fail: function(data) {
+		// 	    console.log(`handling fail :` ,data)
+		// 	  }
+		// })
+		// wx.switchTab({
+		//   uri: 'About'
+		// })
+
+		// router.replace({
+		// 	uri: '/Text',
+		// })
+
+		// router.push({
+		// 	uri: '/Text',
+		// })
+
+		// media.previewImage({
+		// 	current:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592815882328&di=4c514cef2fce4af19b479de46fe5f634&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F64%2F76%2F20300001349415131407760417677.jpg",
+		// 	uris: [
+		// 		'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1592815882328&di=4c514cef2fce4af19b479de46fe5f634&imgtype=0&src=http%3A%2F%2Fa0.att.hudong.com%2F64%2F76%2F20300001349415131407760417677.jpg',
+
+		// 	],
+		// 	success: function () {
+		// 		console.log('preview success',arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log('preview fail,',arguments)
+		// 	}
+		// })
+
+		// wx.compressImage({
+		// 	src: '/onekit/logo.png', // 图片路径
+		// 	quality: 80, // 压缩质量
+		// 	success: function () {
+		// 		console.log('handling success', arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`, arguments)
+		// 	},
+		// 	complete: function () {
+		// 		console.log('handling complete', arguments)
+		// 	}
+		// })
+
+		// wx.navigateTo({
+		// 	url: "../text/a"
+		// })
+
+		// wx.showToast({
+		// 	title: '成功',
+		// 	icon: 'success',
+		// 	duration: 2000
+		// })
+
+		// wx.showModal({
+		// 	title: '提示',
+		// 	content: '这是一个模态弹窗',
+		// 	// showCancel:false,
+		// 	success(res) {
+		// 		console.log("res",res);
+		// 		if (res.confirm) {
+		// 			console.log('用户点击确定')
+		// 		} else if (res.cancel) {
+		// 			console.log('用户点击取消')
+		// 		}
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`, arguments)
+		// 	},
+		// 	complete: function () {
+		// 		console.log(`handling complete`, arguments)
+		// 	}
+
+		// })
+
+		//         this.$page.setTitleBar({ 	
+		//             text: '小明的标题', //设置本页titleBar标题	
+		//             textColor: '#ff0000', //设置本页titleBar标题文字颜色	
+		//             backgroundColor: '#00ff00',//设置本页titleBar标题背景颜色	
+		//             backgroundOpacity: 0.5,//设置本页titleBar标题背景颜色透明度，0为全透明，1为不透明。	
+		//             menu: true //设置本页的titleBar是否启用菜单。	
+		//         })
+
+		// wx.setNavigationBarTitle({
+		// 	title:"1111",
+		// 	success(res) {
+		// 		console.log('setNavigationBarTitle success', res)
+		// 	},
+		// 	fail(err) {
+		// 		console.log('setNavigationBarTitle fail, err is', err)
+		// 	}
+		// })
+		// wx.pageScrollTo({
+		// 	scrollTop: 0,
+		// 	duration: 300
+		// })
+		// share.share({
+		// 	type: 'text/html',
+		// 	data: '<b>bold</b>',
+		// 	success: function (data) {
+		// 		console.log('handling success')
+		// 	},
+		// 	fail: function (data, code) {
+		// 		console.log(`handling fail, code = ${code}`)
+		// 	}
+		// })
+		// let aaa = wx.getMenuButtonBoundingClientRect()
+		// console.log(aaa)
+
+		// wx.startAccelerometer({
+		// 	success(res) {
+		// 		console.log("success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("complete", res)
+		// 	}
+		// })
+		// wx.onAccelerometerChange((res) => {
+		// 	console.log(res);
+		// })
+
+		// sensor.subscribeAccelerometer({
+		// 	callback: function (ret) {
+		// 		console.log(`handling callback, x = ${ret.x}, y = ${ret.y}, z = ${ret.z}`)
+		// 	}
+		// })
+		// wx.startCompass({
+		// 	success(res) {
+		// 		console.log("success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("complete", res)
+		// 	}
+		// })
+		// wx.onCompassChange((res) => {
+		// 	console.log(res);
+		// })
+
+		// wx.startGyroscope({
+		// 	success(res) {
+		// 		console.log("success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("complete", res)
+		// 	}
+		// })
+
+		// wx.onGyroscopeChange((res) => {
+		// 	console.log(res);
+		// })
+
+		// prompt.showContextMenu({
+		//   itemList: ['1','2','3','4','5','6','7'],
+		//   itemColor: '#ff33ff',
+		//   success: function(data) {
+		//     console.log('handling success',data)
+		//   },
+		//   cancel: function() {
+		//     console.log('handling cancel')
+		//   },
+		//   fail: function(data, code) {
+		//     console.log(`handling fail, code = ${code}`)
+		//   }
+		// })
+
+		// wx.showActionSheet({
+		// 	itemList: ['1', '2', '3', '4', '5', '6'],
+		// 	success(res) {
+		// 		console.log("success", res)
+		// 	},
+		// 	fail(res) {
+		// 		console.log("fail", res)
+		// 	},
+		// 	complete(res) {
+		// 		console.log("complete", res)
+		// 	}
+		// })
+
+		// prompt.showDialog({
+		// 	title: 'title',
+		// 	message: 'message',
+		// 	buttons: [
+		// 		{
+		// 			text: 'btn',
+		// 			color: '#33dd44'
+		// 		},
+		// 		{
+		// 			text: 'btn1',
+		// 			color: '#33dd44'
+		// 		}
+		// 	],
+		// 	success: function (res) {
+		// 		console.log('handling callback', res)
+		// 	},
+		// 	cancel: function () {
+		// 		console.log('handling cancel', arguments)
+		// 	},
+		// 	fail: function () {
+		// 		console.log(`handling fail`, arguments)
+		// 	}
+		// })
+
+		// 厂商服务demo
+
+		// console.log("getProvider = ",push.getProvider())
+
+		// push.subscribe({
+		// 	success: function (data) {
+		// 		console.log("push.subscribe succeeded, result data =", data)
+		// 	},
+		// 	fail: function (data, code) {
+		// 		console.log(
+		// 			`push.subscribe failed, result data = ${JSON.stringify(
+		// 				data
+		// 			)}, code = ${code}`
+		// 		)
+		// 	},
+		// 	complete: function () {
+		// 		console.log('push.subscribe completed')
+		// 	}
+		// })
+
+
+	}
+}
+</script>
+
+<style>
+.demo-page {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 40px;
+  text-align: center;
+}
+
+.btn {
+  width: 550px;
+  height: 86px;
+  margin-top: 75px;
+  border-radius: 43px;
+  background-color: #09ba07;
+  font-size: 30px;
+  color: #ffffff;
+}
+</style>
